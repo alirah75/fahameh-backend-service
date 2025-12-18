@@ -5,7 +5,8 @@ from database.models.vendor import Vendor
 
 def insert_new_vendor(db: Session, data: VendorCreate):
     new_vendor = Vendor(
-        name=data.name
+        name=data.name,
+        over_domestic=data.over_domestic
     )
 
     db.add(new_vendor)

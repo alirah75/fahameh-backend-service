@@ -4,7 +4,7 @@ from fastapi import Depends, APIRouter, HTTPException, status
 from database.session import get_db
 
 from database.models.vendor import Vendor
-from database.repository.vendor import get_vendors_name
+from database.repository.get_vendors import fetch_vendors_name
 from database.repository.create_new_vendor import insert_new_vendor
 from routers.route_login import get_current_user
 
@@ -14,9 +14,9 @@ from schemas.Vendor import VendorCreate
 router = APIRouter()
 
 
-@router.get("/", summary="دریافت لیست تمام وندورها")
-def list_vendors(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    vendors = get_vendors_name(db)
+@router.get("/{project_type}", summary="دریافت لیست تمام وندورها")
+def list_vendors(project_type, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    vendors = fetch_vendors_name(db, project_type)
 
     if not vendors:
         raise HTTPException(
