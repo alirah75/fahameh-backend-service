@@ -15,9 +15,8 @@ router = APIRouter()
 
 
 @router.get("/{project_type}", summary="دریافت لیست تمام وندورها")
-def list_vendors(project_type, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def list_vendors(project_type: bool, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     vendors = fetch_vendors_name(db, project_type)
-
     if not vendors:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
