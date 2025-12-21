@@ -53,15 +53,15 @@ def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user)
 
 
 @router.get('/{rfi_number}', summary='نمایش اطلاعات یک گزارش')
-def retrieve_one_report(rfi_number, report_number: Optional[str] = Query(None), current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    report = find_report(db=db, rfi_number=rfi_number)
+def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    report = find_report(db=db, rfi_number=rfi_number, report_number=report_number)
     if not report:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f'Report with RFI_Number "{rfi_number}" not found.'
         )
     report_dict = {
-        k: v for k, v in report[0].__dict__.items()
+        k: v for k, v in report.__dict__.items()
         if not k.startswith("_")
     }
     return report_dict
