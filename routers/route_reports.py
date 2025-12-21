@@ -87,7 +87,7 @@ def create_new_report(data: ReportCreate, current_user: str = Depends(get_curren
     return {"message": "Created new report successfully", "data": new_item}
 
 
-@router.put("/reports/{rfi_numbering}")
+@router.put("/{rfi_numbering}")
 def update_report(
     rfi_numbering: str,
     data: ReportUpdate,
