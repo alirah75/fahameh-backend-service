@@ -36,8 +36,22 @@ def retrieve_one_notification(rfi_number, current_user: str = Depends(get_curren
     return one_note
 
 
-@router.post("/")
+@router.post("/", summary="ساخت نوتیفیکشن جدید")
 def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    from database.models import TimeTable
+    existing = db.query(TimeTable).filter(
+        TimeTable.IDP == data.IDP,
+                TimeTable.IDOM == data.IDOM,
+                TimeTable.Over_Domestic == data.Over_Domestic,
+                TimeTable.RFI_Number == data.RFI_Number
+    ).first()
+
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This TimeTable record already exists."
+        )
+
     try:
         new_item, rfi_numbering = insert_in_timetable(db, data)
         new_rfi_date = insert_in_rfi_date(db, data, rfi_numbering)

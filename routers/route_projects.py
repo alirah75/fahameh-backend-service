@@ -38,7 +38,7 @@ def retrieve_irnno(project_name: str, Over_Domestic: str, current_user: str = De
     return data
 
 
-@router.get("/{idp}/rfi/next")
+@router.get("/{idp}/rfi/next", summary="بازگرداندن شماره rfi_number و idom")
 def get_full_rfi_data(idp, in_out, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         if in_out == '0':
