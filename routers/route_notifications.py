@@ -15,14 +15,15 @@ router = APIRouter()
 
 @router.get("/statuses", summary="دریافت لیست وضعیت‌های ممکن برای نوتیفیکیشن‌ها")
 def list_notification_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    statuses = get_all_notification_statuses(db)
-    if not statuses:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="هیچ وضعیت نوتیفیکیشنی یافت نشد"
-        )
+    # statuses = get_all_notification_statuses(db)
+    # if not statuses:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND,
+    #         detail="هیچ وضعیت نوتیفیکیشنی یافت نشد"
+    #     )
+    # return {idx + 1: status[0] for idx, status in enumerate(statuses)}
+    return {1: 'Cancel', 2: 'Done', 3: 'Ongoing'}
 
-    return {idx + 1: status[0] for idx, status in enumerate(statuses)}
 
 
 @router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف')
