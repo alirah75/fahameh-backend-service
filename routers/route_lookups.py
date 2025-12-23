@@ -13,15 +13,16 @@ router = APIRouter()
 
 @router.get("/report-statuses", summary="دریافت لیست وضعیت‌های ممکن برای گزارش‌ها")
 def list_report_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    statuses = get_all_report_statuses(db)
+    # statuses = get_all_report_statuses(db)
 
-    if not statuses:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="هیچ وضعیت گزارشی یافت نشد"
-        )
-
-    return {idx: status[0] for idx, status in enumerate(statuses, start=1)}
+    # if not statuses:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND,
+    #         detail="هیچ وضعیت گزارشی یافت نشد"
+    #     )
+    #
+    # return {idx: status[0] for idx, status in enumerate(statuses, start=1)}
+    return {1: "قابل قبول", 2: "کامنت", 3: "ریجکت", 4: "دریافت نشده"}
 
 
 @router.get("/", summary="دریافت لیست مقدارهای غیرتکراری Cmbinout از جدول T_Invoice")
