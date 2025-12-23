@@ -22,7 +22,7 @@ def list_report_statuses(current_user: str = Depends(get_current_user), db: Sess
     #     )
     #
     # return {idx: status[0] for idx, status in enumerate(statuses, start=1)}
-    return {1: "قابل قبول", 2: "کامنت", 3: "ریجکت", 4: "دریافت نشده"}
+    return {1: "Acc", 2: "Objection", 3: "not recived", 4: "Rej"}
 
 
 @router.get("/", summary="دریافت لیست مقدارهای غیرتکراری Cmbinout از جدول T_Invoice")
