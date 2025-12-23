@@ -47,3 +47,7 @@ class TimeTableCreate(BaseModel):
 
         # اگر مقدار تکی باشد
         return convert(v)
+
+
+class TimeTableUpdate(BaseModel):
+    pass
