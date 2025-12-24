@@ -49,5 +49,7 @@ class TimeTableCreate(BaseModel):
         return convert(v)
 
 
-class TimeTableUpdate(BaseModel):
-    pass
+class RFI_Date_Update(BaseModel):
+    ApproveManday: int
+    IDRD: int
+    InspectorPrice: float

@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
-from database.models.T_TimeTable import TimeTable
-from schemas.TimeTable import TimeTableUpdate
+from database.models.T_RFIDate import RFI_Date
+from schemas.TimeTable import RFI_Date_Update
 
-def update_notif(db: Session, rfi_number: str, payload: TimeTableUpdate, current_user: str):
-    record = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).first()
+def update_notif(db: Session, rfi_number: str, payload: RFI_Date_Update, current_user: str):
+    record = db.query(RFI_Date).filter(RFI_Date.IDRD == payload.IDRD, RFI_Date.RFI_Numbering == rfi_number).first()
 
     if not record:
         return None
 
-    update_data = payload.model_dump(exclude_unset=True)
+    update_data = payload.dict()
 
     for key, value in update_data.items():
         setattr(record, key, value)

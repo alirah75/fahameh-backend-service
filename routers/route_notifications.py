@@ -6,24 +6,15 @@ from database.repository.update_one_notification import update_notif
 from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
-from database.repository.notification_status import get_all_notification_statuses
 from routers.route_login import get_current_user
-from schemas.TimeTable import TimeTableCreate, TimeTableUpdate
+from schemas.TimeTable import TimeTableCreate, RFI_Date_Update
 
 router = APIRouter()
 
 
 @router.get("/statuses", summary="دریافت لیست وضعیت‌های ممکن برای نوتیفیکیشن‌ها")
 def list_notification_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    # statuses = get_all_notification_statuses(db)
-    # if not statuses:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_404_NOT_FOUND,
-    #         detail="هیچ وضعیت نوتیفیکیشنی یافت نشد"
-    #     )
-    # return {idx + 1: status[0] for idx, status in enumerate(statuses)}
     return {1: 'Cancel', 2: 'Done', 3: 'Ongoing'}
-
 
 
 @router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف')
@@ -64,10 +55,10 @@ def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_
     return {"message": "Created new notification successfully", "data": new_item}
 
 
-@router.put('/{rfi_number}', summary='آپدیت اطلاعات یک نوتیف')
-def update_notification(
+@router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی. rfi_date')
+def update_rfi_date(
     rfi_number: str,
-    payload: TimeTableUpdate,
+    payload: RFI_Date_Update,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
