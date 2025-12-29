@@ -58,6 +58,7 @@ class RFI_Date_Update(BaseModel):
 
 
 class Notification_Update(BaseModel):
+    NotificationNo: Optional[str]
     RFI_Status: Optional[str]
     Inspector_Type: Optional[str]
     Goods_Description: Optional[str]
