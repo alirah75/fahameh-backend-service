@@ -32,10 +32,10 @@ def get_project_last_irnn(db: Session, project_name: str, Over_Domestic: str):
 
     rfi_numbers = [row.RFI_Numbering for row in timetable_rows]
 
-    # لیست برای نگهداری همه مقادیر IRNNO
-    all_irnno_values = []
+    # نگهداری بیشینه IRNNO و RFI_Numbering مربوطه
+    final_max_irnno = 0
+    max_rfi_numbering = None
 
-    # گرفتن همه گزارش‌ها و استخراج بزرگترین مقدار از هر IRNNO
     for rfi in rfi_numbers:
         reports = db.query(Reports).filter(
             Reports.RFI_Numbering == rfi
@@ -43,24 +43,25 @@ def get_project_last_irnn(db: Session, project_name: str, Over_Domestic: str):
 
         for rep in reports:
             if rep.IRNNO:
-                # مثال: "12/13/54/80"
                 parts = rep.IRNNO.split("/")
-                # تبدیل به عدد و حذف موارد غیر عددی
-                nums = []
-                for p in parts:
-                    p = p.strip()
-                    if p.isdigit():
-                        nums.append(int(p))
+                nums = [int(p.strip()) for p in parts if p.strip().isdigit()]
 
                 if nums:
                     max_num = max(nums)
-                    all_irnno_values.append(max_num)
+                    if max_num > final_max_irnno:
+                        final_max_irnno = max_num
+                        max_rfi_numbering = rfi
 
-    if not all_irnno_values:
-        all_irnno_values.append(0)
+    rfi_row = db.query(TimeTable).filter(
+        TimeTable.IDP == idp,
+        TimeTable.IDOM == idom,
+        TimeTable.RFI_Numbering == max_rfi_numbering
+    ).first()
 
-    # بزرگ‌ترین عدد نهایی
-    final_max_irnno = max(all_irnno_values)
+    rfi_numer_value = rfi_row.RFI_Number if rfi_row else None
 
-    return {"irnno": final_max_irnno, "next_irnno": final_max_irnno + 1}
-
+    return {
+        "irnno": final_max_irnno,
+        "next_irnno": final_max_irnno + 1,
+        "rfi_numer": rfi_numer_value
+    }

@@ -1,8 +1,5 @@
 from sqlalchemy.orm import Session
-from fastapi import Depends, APIRouter, HTTPException, status, Query
-
-from core.config import settings
-from database.models import Project, Reports
+from fastapi import Depends, APIRouter, HTTPException, status
 from database.repository.create_new_report import insert_new_report
 from database.repository.report_service import update_report_fields, commit_report_update, get_report_by_rfi
 from database.session import get_db
@@ -67,13 +64,6 @@ def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(g
 
 @router.post("/")
 def create_new_report(data: ReportCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    # existing = db.query(Project).filter(Reports.Report_No == data.report_no,
-    #                                     Reports.RFI_Numbering == data.rfi_numbering).first()
-    # if existing:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         detail=f'Report "{data.report_no}" with RFI "{data.rfi_numbering}" already exists.'
-    #     )
 
     try:
         new_item = insert_new_report(db, data)
