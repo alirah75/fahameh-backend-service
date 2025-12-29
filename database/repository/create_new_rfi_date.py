@@ -16,10 +16,10 @@ def insert_in_rfi_date(db: Session, data: TimeTableCreate, rfi_numbering):
             RFI_Date=date,
             Inspector_Name=data.Inspector_Name,
             InspectorPrice=data.FinalPrice,
-            ApproveManday=1111,
+            ApproveManday=1,
             SubstituteinspectorPrice=0.0,
             FinalPrice=0,
-            ApproveManday1=1111
+            ApproveManday1=222
 
         )
         rfi_dates.append(rfi_date)
