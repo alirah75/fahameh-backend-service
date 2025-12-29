@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
 from database.repository.create_new_rfi_date import insert_in_rfi_date
+from database.repository.delete_one_notification import delete_notification_service
 from database.repository.update_one_notification import update_notif, update_time_table_info
 from database.session import get_db
 from database.repository.get_one_notif import find_notif
@@ -94,4 +95,16 @@ def update_time_table(
     return {
         "message": "Notification updated successfully",
         "data": updated
+    }
+
+
+@router.delete("/notification/", summary="Delete notification and related data")
+def delete_notification(
+    rfi_numbering,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    delete_notification_service(db, rfi_numbering)
+    return {
+        "message": "Notification and related data deleted successfully"
     }
