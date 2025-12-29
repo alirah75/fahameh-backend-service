@@ -29,7 +29,7 @@ def insert_in_timetable(db: Session, data: TimeTableCreate):
         Material=data.Material,# معمولا مقدار خالی دارد
         User_Name=data.User_Name,# نام یوزر
         FolderNo=data.RFI_Number,# همان مقدار RFI_Number
-        NotificationNo=data.NotificationNo,# نمیدانم باید بپرسم. یک رشته است
+        NotificationNo=rfi_numbering,# نمیدانم باید بپرسم. یک رشته است
         DateShamsi=settings.gregorian_to_jalali_str(data.RFI_Recived_Date),# تاریخ شمسی
         Inspector_Type=data.Inspector_Type,# یا freelance است یا resident
         Goods_Description=data.Goods_Description,# میتواند خالی باشد در هنگام ادیت مقدار بگیرد. یک رشته است
