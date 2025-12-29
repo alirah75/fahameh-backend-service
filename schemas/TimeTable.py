@@ -4,6 +4,23 @@ from datetime import date
 from typing import List, Optional
 
 
+def parse_jalali(v):
+    """تبدیل تاریخ شمسی به میلادی"""
+    if v is None:
+        return v
+
+    def convert(item):
+        if isinstance(item, str):
+            item = item.replace("/", "-")
+            year, month, day = map(int, item.split("-"))
+            return jdatetime.date(year, month, day).togregorian()
+        return item
+
+    if isinstance(v, list):
+        return [convert(item) for item in v]
+    return convert(v)
+
+
 class TimeTableCreate(BaseModel):
     IDP: int
     IDOM: int
@@ -30,26 +47,29 @@ class TimeTableCreate(BaseModel):
     FinalPrice: Optional[str]
 
     @validator("InspectionDate", "RFI_Recived_Date", pre=True)
-    def parse_jalali_date(cls, v):
-        if v is None:
-            return v
-
-        def convert(v):
-            if isinstance(v, str):
-                v = v.replace("/", "-")
-                year, month, day = map(int, v.split("-"))
-                return jdatetime.date(year, month, day).togregorian()
-            return v
-
-        # اگر لیست باشد
-        if isinstance(v, list):
-            return [convert(item) for item in v]
-
-        # اگر مقدار تکی باشد
-        return convert(v)
+    def validate_dates(cls, v):
+        return parse_jalali(v)
 
 
 class RFI_Date_Update(BaseModel):
     ApproveManday: int
     IDRD: int
     InspectorPrice: float
+
+
+class Notification_Update(BaseModel):
+    RFI_Status: Optional[str]
+    Inspector_Type: Optional[str]
+    Goods_Description: Optional[str]
+    RFI_Recived_Date: Optional[date]
+    InspectionLocation: Optional[str]
+    InspectionDate: Optional[date]
+    VendorName: Optional[str]
+    approved_Duration: Optional[str]
+    Inspector_Name: Optional[str]
+    Remark: Optional[str]
+    FolderNo: Optional[str]
+
+    @validator("InspectionDate", "RFI_Recived_Date", pre=True)
+    def validate_dates(cls, v):
+        return parse_jalali(v)

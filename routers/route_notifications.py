@@ -2,12 +2,12 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
 from database.repository.create_new_rfi_date import insert_in_rfi_date
-from database.repository.update_one_notification import update_notif
+from database.repository.update_one_notification import update_notif, update_time_table_info
 from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
-from schemas.TimeTable import TimeTableCreate, RFI_Date_Update
+from schemas.TimeTable import TimeTableCreate, RFI_Date_Update, Notification_Update
 
 router = APIRouter()
 
@@ -55,7 +55,7 @@ def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_
     return {"message": "Created new notification successfully", "data": new_item}
 
 
-@router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی. rfi_date')
+@router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی')
 def update_rfi_date(
     rfi_number: str,
     payload: RFI_Date_Update,
@@ -63,6 +63,27 @@ def update_rfi_date(
     db: Session = Depends(get_db)
 ):
     updated = update_notif(db, rfi_number, payload, current_user)
+
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f'Notification with RFI_Number "{rfi_number}" not found.'
+        )
+
+    return {
+        "message": "Notification updated successfully",
+        "data": updated
+    }
+
+
+@router.put('/notification/', summary='آپدیت اطلاعات نوتیفیکیشن')
+def update_time_table(
+    rfi_number: str,
+    payload: Notification_Update,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    updated = update_time_table_info(db, rfi_number, payload, current_user)
 
     if not updated:
         raise HTTPException(
