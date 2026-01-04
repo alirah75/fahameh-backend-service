@@ -10,14 +10,16 @@ from routers import route_projects
 from routers import route_vendors
 from routers import route_reports
 from routers import route_notifications
+from routers import route_pdf_reports
 
 
 api_router = APIRouter()
 api_router.include_router(route_notifications.router, prefix="/notifications", tags=["notifications"])
-api_router.include_router(route_reports.router, prefix="/reports", tags=["reports"])
 api_router.include_router(route_projects.router, prefix="/projects", tags=["projects"])
-api_router.include_router(route_vendors.router, prefix="/vendors", tags=["vendors"])
+api_router.include_router(route_reports.router, prefix="/reports", tags=["reports"])
+api_router.include_router(route_pdf_reports.router, prefix="/pdf_reports", tags=["pdf_reports"])
 api_router.include_router(route_locations.router, prefix="/locations", tags=["locations"])
+api_router.include_router(route_vendors.router, prefix="/vendors", tags=["vendors"])
 api_router.include_router(route_inspectors.router, prefix="/inspectors", tags=["inspectors"])
 api_router.include_router(route_lookups.router, prefix="/lookups", tags=["lookups"])
 api_router.include_router(route_dashboard.router, prefix="", tags=["dashboard"])

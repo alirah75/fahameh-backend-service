@@ -18,15 +18,27 @@ def list_notification_statuses(current_user: str = Depends(get_current_user), db
     return {1: 'Cancel', 2: 'Done', 3: 'Ongoing'}
 
 
-@router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف')
-def retrieve_one_notification(rfi_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    one_note = find_notif(db, rfi_number)
+# @router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف')
+# def retrieve_one_notification(rfi_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+#     one_note = find_notif(db, rfi_number)
+#     if not one_note:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f'Notification with RFI_Number "{rfi_number}" not found.'
+#         )
+#     return one_note
+
+
+@router.get('/{report_number}', summary='نمایش اطلاعات یک نوتیف')
+def retrieve_one_notification(report_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    one_note = find_notif(db, report_number)
     if not one_note:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f'Notification with RFI_Number "{rfi_number}" not found.'
+            detail=f'Notification with RFI_Number "{report_number}" not found.'
         )
     return one_note
+
 
 
 @router.post("/", summary="ساخت نوتیفیکشن جدید")

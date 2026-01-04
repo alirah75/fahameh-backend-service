@@ -2,8 +2,10 @@ from sqlalchemy.orm import Session
 from database.models.T_TimeTable import TimeTable
 from database.models.T_RFIDate import RFI_Date
 
-def find_notif(db: Session, rfi_number: str):
-    results = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).all()
+# def find_notif(db: Session, rfi_number: str):
+def find_notif(db: Session, report_number: str):
+    # results = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).all()
+    results = db.query(TimeTable).filter(TimeTable.NotificationNo == report_number).all()
 
     output = []
 

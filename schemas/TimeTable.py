@@ -66,7 +66,7 @@ class Notification_Update(BaseModel):
     InspectionLocation: Optional[str]
     InspectionDate: Optional[date]
     VendorName: Optional[str]
-    approved_Duration: Optional[str]
+    Inspection_Duration: Optional[str]
     Inspector_Name: Optional[str]
     Remark: Optional[str]
     FolderNo: Optional[str]

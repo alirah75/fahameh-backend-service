@@ -5,7 +5,7 @@ from database.models.T_TimeTable import TimeTable
 
 def get_full_rfi_info(db: Session, idp, in_out: str):
     idom = find_idom_value(db, idp, in_out)
-    next_rfi = get_last_rfi_number(db, idp, idom, in_out)
+    next_rfi = get_last_rfi_number(db, int(idp), idom, in_out)
     return idom, next_rfi
 
 
