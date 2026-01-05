@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database.models.T_Invoice import Invoice
 from database.models.T_TimeTable import TimeTable
@@ -17,7 +18,18 @@ def get_last_rfi_number(db: Session, idp: int, idom: int, over_domestic: str):
     last = (db.query(TimeTable).filter(TimeTable.IDP == idp, TimeTable.IDOM == idom,
                                        TimeTable.Over_Domestic == over_domestic).order_by(
         TimeTable.RFI_Number.desc()).first())
+    max_rfi = (
+        db.query(func.max(TimeTable.RFI_Number))
+        .filter(
+            TimeTable.IDP == idp,
+            TimeTable.IDOM == idom,
+            TimeTable.Over_Domestic == over_domestic
+        )
+        .scalar()
+    )
     if last and last.RFI_Number:
         return int(last.RFI_Number) + 1
+    elif last and max_rfi:
+        return int(max_rfi) + 1
     else:
         return 1
