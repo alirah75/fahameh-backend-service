@@ -28,8 +28,8 @@ def update_notif(db: Session, rfi_number: str, payload: RFI_Date_Update, current
 
 def update_time_table_info(db: Session, rfi_number: str, payload: Notification_Update, current_user: str):
     """آپدیت اطلاعات نوتیفیکیشن. قسمت بالایی اطلاعات نوتیفیکیش شماره ....."""
-    # record = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).first()
-    record = db.query(TimeTable).filter(TimeTable.NotificationNo == rfi_number).first()
+    record = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).first()
+    # record = db.query(TimeTable).filter(TimeTable.NotificationNo == rfi_number).first()
 
     if not record:
         return None
