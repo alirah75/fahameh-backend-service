@@ -16,6 +16,7 @@ def get_report_rfi(project_name: str, db: Session):
             Reports.IRNNO,
             TimeTable.Inspection_Duration,
             TimeTable.NotificationNo,
+            TimeTable.RFI_Numbering,
             Project.Title,
             Invoice.Over_Domestic,
             TimeTable.VendorName

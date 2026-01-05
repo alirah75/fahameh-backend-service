@@ -28,6 +28,7 @@ def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user)
             irnno,
             App_manday_1stPrice,
             NotificationNo,
+            RFI_Numbering,
             title,
             over_domestic,
             vendor_name
@@ -40,6 +41,7 @@ def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user)
             "IRNNO": irnno,
             "Duration": App_manday_1stPrice,
             "NotificationNo": NotificationNo,    # ToDo change RFI_Numbering with NotificationNo in ui
+            "RFI_Numbering": RFI_Numbering,    # ToDo change RFI_Numbering with NotificationNo in ui
             "ProjectTitle": title,
             "Over_Domestic": over_domestic,
             "VendorName": vendor_name
