@@ -13,7 +13,7 @@ from schemas.Reports import ReportCreate, ReportUpdate
 router = APIRouter()
 
 
-@router.get("/rfi/")
+@router.get("/rfi/", status_code=status.HTTP_200_OK)
 def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     data = get_report_rfi(project_name, db)
     if not data:
@@ -50,7 +50,7 @@ def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user)
     return result
 
 
-@router.get('/{rfi_number}', summary='نمایش اطلاعات یک گزارش')
+@router.get('/{rfi_number}', summary='نمایش اطلاعات یک گزارش', status_code=status.HTTP_200_OK)
 def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     report = find_report(db=db, rfi_number=rfi_number, report_number=report_number)
     if not report:
@@ -65,7 +65,7 @@ def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(g
     return report_dict
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def create_new_report(data: ReportCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
 
     try:
@@ -78,7 +78,7 @@ def create_new_report(data: ReportCreate, current_user: str = Depends(get_curren
     return {"message": "Created new report successfully", "data": new_item}
 
 
-@router.put("/{rfi_numbering}")
+@router.put("/{rfi_numbering}", status_code=status.HTTP_200_OK)
 def update_report(
     rfi_numbering: str,
     data: ReportUpdate,
@@ -91,7 +91,7 @@ def update_report(
     return {"message": "Report updated successfully", "data": report}
 
 
-@router.delete("/report/", status_code=200)
+@router.delete("/report/", status_code=status.HTTP_204_NO_CONTENT)
 def delete_report(
     report_no: str,
     current_user: str = Depends(get_current_user),

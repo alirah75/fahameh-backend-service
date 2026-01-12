@@ -7,7 +7,7 @@ from routers.route_login import get_current_user
 
 router = APIRouter()
 
-@router.get("/", summary="دریافت لیست تمام بازرسان‌ها")
+@router.get("/", summary="دریافت لیست تمام بازرسان‌ها", status_code=status.HTTP_200_OK)
 def list_inspectors(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     inspectors = get_all_inspectors(db)
 
@@ -20,7 +20,7 @@ def list_inspectors(current_user: str = Depends(get_current_user), db: Session =
     return {inspector.ID_Ins: inspector.Inspector_Name for inspector in inspectors}
 
 
-@router.get("/{inspector_id}", summary="دریافت مشخصات یک بازرس")
+@router.get("/{inspector_id}", summary="دریافت مشخصات یک بازرس", status_code=status.HTTP_200_OK)
 def get_inspector(inspector_id: int, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     inspector = get_inspector_by_id(db, inspector_id)
 

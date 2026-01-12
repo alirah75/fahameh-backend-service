@@ -13,7 +13,7 @@ from schemas.Project import ProjectCreate
 
 router = APIRouter()
 
-@router.get("/", summary="دریافت لیست نام پروژه‌ها")
+@router.get("/", summary="دریافت لیست نام پروژه‌ها", status_code=status.HTTP_200_OK)
 def list_projects(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     projects = get_all_projects(db)
     get_project_last_irnn(db, '', '')
@@ -27,7 +27,7 @@ def list_projects(current_user: str = Depends(get_current_user), db: Session = D
     return {project.IDP: project.Title for project in projects}
 
 
-@router.get('/{project_name}/irnno', summary='دریافت اخرین عدد irnno برای هر پروژه')
+@router.get('/{project_name}/irnno', summary='دریافت اخرین عدد irnno برای هر پروژه', status_code=status.HTTP_200_OK)
 def retrieve_irnno(project_name: str, Over_Domestic: str, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     data = get_project_last_irnn(db, project_name, Over_Domestic)
     if not data:
@@ -38,7 +38,7 @@ def retrieve_irnno(project_name: str, Over_Domestic: str, current_user: str = De
     return data
 
 
-@router.get("/{idp}/rfi/next", summary="بازگرداندن شماره rfi_number و idom")
+@router.get("/{idp}/rfi/next", summary="بازگرداندن شماره rfi_number و idom", status_code=status.HTTP_200_OK)
 def get_full_rfi_data(idp, in_out, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         if in_out == '0':
@@ -68,7 +68,7 @@ def get_full_rfi_data(idp, in_out, current_user: str = Depends(get_current_user)
         )
 
 
-@router.post("/projects")
+@router.post("/projects", status_code=status.HTTP_201_CREATED)
 def create_new_project(data: ProjectCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(Project).filter(Project.Title == data.Title).first()
     if existing:

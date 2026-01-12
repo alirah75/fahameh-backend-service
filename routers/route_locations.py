@@ -13,7 +13,7 @@ from routers.route_login import get_current_user
 router = APIRouter()
 
 
-@router.get('/provinces', summary="دریافت لیست تمام استان‌ها")
+@router.get('/provinces', summary="دریافت لیست تمام استان‌ها", status_code=status.HTTP_200_OK)
 def list_provinces(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         provinces = get_provinces(db)
@@ -32,7 +32,7 @@ def list_provinces(current_user: str = Depends(get_current_user), db: Session = 
         )
 
 
-@router.get('/cities/', summary="دریافت لیست شهرهای یک استان با شناسه استان (province_id)")
+@router.get('/cities/', summary="دریافت لیست شهرهای یک استان با شناسه استان (province_id)", status_code=status.HTTP_200_OK)
 def list_cities(province_id: int, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         cities = get_cities_by_province(db, province_id)
@@ -51,7 +51,7 @@ def list_cities(province_id: int, current_user: str = Depends(get_current_user),
         )
 
 
-@router.get('/countries/', summary="دریافت لیست کشور ها")
+@router.get('/countries/', summary="دریافت لیست کشور ها", status_code=status.HTTP_200_OK)
 def list_countries(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         countries = get_countries(db)

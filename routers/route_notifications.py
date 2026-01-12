@@ -13,12 +13,12 @@ from schemas.TimeTable import TimeTableCreate, RFI_Date_Update, Notification_Upd
 router = APIRouter()
 
 
-@router.get("/statuses", summary="دریافت لیست وضعیت‌های ممکن برای نوتیفیکیشن‌ها")
+@router.get("/statuses", summary="دریافت لیست وضعیت‌های ممکن برای نوتیفیکیشن‌ها", status_code=status.HTTP_200_OK)
 def list_notification_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     return {1: 'Cancel', 2: 'Done', 3: 'Ongoing'}
 
 
-@router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف')
+@router.get('/{rfi_number}', summary='نمایش اطلاعات یک نوتیف', status_code=status.HTTP_200_OK)
 def retrieve_one_notification(rfi_number, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     one_note = find_notif(db, rfi_number)
     if not one_note:
@@ -41,7 +41,7 @@ def retrieve_one_notification(rfi_number, current_user: str = Depends(get_curren
 
 
 
-@router.post("/", summary="ساخت نوتیفیکشن جدید")
+@router.post("/", summary="ساخت نوتیفیکشن جدید", status_code=status.HTTP_201_CREATED)
 def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     from database.models import TimeTable
     existing = db.query(TimeTable).filter(
@@ -68,7 +68,7 @@ def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_
     return {"message": "Created new notification successfully", "data": new_item}
 
 
-@router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی')
+@router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی', status_code=status.HTTP_200_OK)
 def update_rfi_date(
     rfi_number: str,
     payload: RFI_Date_Update,
@@ -89,7 +89,7 @@ def update_rfi_date(
     }
 
 
-@router.put('/notification/', summary='آپدیت اطلاعات نوتیفیکیشن')
+@router.put('/notification/', summary='آپدیت اطلاعات نوتیفیکیشن', status_code=status.HTTP_200_OK)
 def update_time_table(
     rfi_number: str,
     payload: Notification_Update,
@@ -110,7 +110,7 @@ def update_time_table(
     }
 
 
-@router.delete("/notification/", summary="Delete notification and related data")
+@router.delete("/notification/", summary="Delete notification and related data", status_code=status.HTTP_204_NO_CONTENT)
 def delete_notification(
     rfi_numbering,
     current_user: str = Depends(get_current_user),

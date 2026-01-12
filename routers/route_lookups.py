@@ -11,7 +11,7 @@ from routers.route_login import get_current_user
 router = APIRouter()
 
 
-@router.get("/report-statuses", summary="دریافت لیست وضعیت‌های ممکن برای گزارش‌ها")
+@router.get("/report-statuses", summary="دریافت لیست وضعیت‌های ممکن برای گزارش‌ها", status_code=status.HTTP_200_OK)
 def list_report_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     # statuses = get_all_report_statuses(db)
 
@@ -25,7 +25,7 @@ def list_report_statuses(current_user: str = Depends(get_current_user), db: Sess
     return {1: "Acc", 2: "Objection", 3: "not recived", 4: "Rej"}
 
 
-@router.get("/", summary="دریافت لیست مقدارهای غیرتکراری Cmbinout از جدول T_Invoice")
+@router.get("/", summary="دریافت لیست مقدارهای غیرتکراری Cmbinout از جدول T_Invoice", status_code=status.HTTP_200_OK)
 def list_inout(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     values = get_inout_list(db, column_name="Over_Domestic")
 

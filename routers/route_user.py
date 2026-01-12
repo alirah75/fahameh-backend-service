@@ -12,7 +12,7 @@ from schemas.user import UserBase
 
 router = APIRouter()
 
-@router.get("/users/me")
+@router.get("/users/me", status_code=status.HTTP_200_OK)
 def read_users_me(current_user: UserBase = Depends(get_current_user)):
     return [current_user.user_name, current_user.permit]
 

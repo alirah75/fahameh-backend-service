@@ -14,7 +14,7 @@ from schemas.Vendor import VendorCreate
 router = APIRouter()
 
 
-@router.get("/{project_type}", summary="دریافت لیست تمام وندورها")
+@router.get("/{project_type}", summary="دریافت لیست تمام وندورها", status_code=status.HTTP_200_OK)
 def list_vendors(project_type: bool, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     vendors = fetch_vendors_name(db, project_type)
     if not vendors:
@@ -28,7 +28,7 @@ def list_vendors(project_type: bool, current_user: str = Depends(get_current_use
     return vendor_names
 
 
-@router.post('/')
+@router.post('/', status_code=status.HTTP_201_CREATED)
 def create_new_vendor(data: VendorCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(Vendor).filter(Vendor.name == data.name).first()
     if existing:
