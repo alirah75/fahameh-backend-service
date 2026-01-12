@@ -16,6 +16,10 @@ class Settings:
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1800
     SECRET_KEY: str = os.getenv("SECRET_KEY")
     ALGORITHM: str = 'HS256'
+    BACKEND_IP_ADDRESS: str = os.getenv("BACKEND_IP_ADDRESS")
+    FRONTEND_IP_ADDRESS: str = os.getenv("FRONTEND_IP_ADDRESS")
+    BACKEND_PORT: int = int(os.getenv("BACKEND_PORT"))
+    FRONTEND_PORT: int = int(os.getenv("FRONTEND_PORT"))
 
 
 

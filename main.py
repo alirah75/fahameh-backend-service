@@ -39,7 +39,10 @@ app = start_application()
 
 @app.get('/')
 def home():
-    return RedirectResponse(url='http://localhost:5173/login', status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return RedirectResponse(
+        url=f'http://{settings.FRONTEND_IP_ADDRESS}:{settings.FRONTEND_PORT}/login',
+        status_code=status.HTTP_307_TEMPORARY_REDIRECT
+    )
 
 
 
@@ -54,4 +57,4 @@ def health_check_db() -> Dict[str, str]:
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host='127.0.0.1', port=8001, reload=True)
+    uvicorn.run("main:app", host=settings.BACKEND_IP_ADDRESS, port=settings.BACKEND_PORT, reload=True)
