@@ -1,5 +1,6 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.responses import RedirectResponse
 from sqlalchemy import text
 from typing import Dict
 from fastapi.middleware.cors import CORSMiddleware
@@ -38,7 +39,7 @@ app = start_application()
 
 @app.get('/')
 def home():
-    return {"Message": "Hello ..."}
+    return RedirectResponse(url='http://localhost:5173/login', status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
 
 
