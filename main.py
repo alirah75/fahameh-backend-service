@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy import text
 from typing import Dict
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 
 from core.config import settings
 from database.session import get_db
@@ -11,6 +12,12 @@ from database.db import engine
 from database.models.base import Base
 from apis.base import api_router
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Application startup")
+    yield
+    print("Application shutdown")
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
@@ -21,7 +28,7 @@ def include_router(app):
 
 
 def start_application():
-    app = FastAPI(title=settings.title, description=settings.description, version=settings.version)
+    app = FastAPI(title=settings.title, description=settings.description, version=settings.version, lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
