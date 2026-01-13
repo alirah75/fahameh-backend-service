@@ -8,7 +8,7 @@ from database.session import get_db
 from database.repository.get_one_report import find_report
 from database.repository.get_rfi_report import get_report_rfi
 from routers.route_login import get_current_user
-from schemas.Reports import ReportCreate, ReportUpdate
+from schemas.Reports import ReportCreateSchema, ReportUpdateSchema
 
 router = APIRouter()
 
@@ -66,7 +66,7 @@ def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(g
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_new_report(data: ReportCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_new_report(data: ReportCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
 
     try:
         new_item = insert_new_report(db, data)
@@ -81,7 +81,7 @@ def create_new_report(data: ReportCreate, current_user: str = Depends(get_curren
 @router.put("/{rfi_numbering}", status_code=status.HTTP_200_OK)
 def update_report(
     rfi_numbering: str,
-    data: ReportUpdate,
+    data: ReportUpdateSchema,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

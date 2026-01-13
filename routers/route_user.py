@@ -8,12 +8,12 @@ from database.models.token_blacklist import TokenBlacklist
 # from database.repository.user import get_all_users
 from database.session import get_db
 from routers.route_login import get_current_user
-from schemas.user import UserBase
+from schemas.user import UserBaseSchema
 
 router = APIRouter()
 
 @router.get("/users/me", status_code=status.HTTP_200_OK)
-def read_users_me(current_user: UserBase = Depends(get_current_user)):
+def read_users_me(current_user: UserBaseSchema = Depends(get_current_user)):
     return [current_user.user_name, current_user.permit]
 
 

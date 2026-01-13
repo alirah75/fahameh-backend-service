@@ -8,7 +8,7 @@ from database.repository.get_vendors import fetch_vendors_name
 from database.repository.create_new_vendor import insert_new_vendor
 from routers.route_login import get_current_user
 
-from schemas.Vendor import VendorCreate
+from schemas.Vendor import VendorCreateSchema
 
 
 router = APIRouter()
@@ -29,7 +29,7 @@ def list_vendors(project_type: bool, current_user: str = Depends(get_current_use
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED)
-def create_new_vendor(data: VendorCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_new_vendor(data: VendorCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(Vendor).filter(Vendor.name == data.name).first()
     if existing:
         raise HTTPException(

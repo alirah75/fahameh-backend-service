@@ -2,11 +2,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from database.models import Invoice
-from schemas.Project import ProjectCreate
+from schemas.Project import ProjectCreateSchema
 from database.models.T_Project import Project
 
 
-def insert_new_project(db: Session, data: ProjectCreate):
+def insert_new_project(db: Session, data: ProjectCreateSchema):
     last_id = db.query(func.max(Project.IDP)).scalar()
     new_project = Project(
         IDP=last_id+1,

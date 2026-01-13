@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from database.models.inspection import Inspection
-from schemas.inspection import InspectionCreate
+from schemas.inspection import InspectionCreateSchema
 
-def create_inspection(db: Session, inspection_data: InspectionCreate):
+def create_inspection(db: Session, inspection_data: InspectionCreateSchema):
     new_inspection = Inspection(
         project_name=inspection_data.projectInfo.projectName,
         province=inspection_data.projectInfo.province,

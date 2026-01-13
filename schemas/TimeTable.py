@@ -21,7 +21,7 @@ def parse_jalali(v):
     return convert(v)
 
 
-class TimeTableCreate(BaseModel):
+class TimeTableCreateSchema(BaseModel):
     IDP: int
     IDOM: int
     IDR: int = None
@@ -51,13 +51,13 @@ class TimeTableCreate(BaseModel):
         return parse_jalali(v)
 
 
-class RFI_Date_Update(BaseModel):
+class RFIDateUpdateSchema(BaseModel):
     ApproveManday: int
     IDRD: int
     InspectorPrice: float
 
 
-class Notification_Update(BaseModel):
+class NotificationUpdateSchema(BaseModel):
     NotificationNo: Optional[str]
     RFI_Status: Optional[str]
     Inspector_Type: Optional[str]

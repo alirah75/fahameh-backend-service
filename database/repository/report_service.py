@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from database.models.T_Reports import Reports
-from schemas.Reports import ReportUpdate
+from schemas.Reports import ReportUpdateSchema
 from core.config import settings
 from fastapi import HTTPException, status
 
@@ -13,7 +13,7 @@ def get_report_by_rfi(db: Session, rfi_numbering: str) -> Reports:
         )
     return report
 
-def update_report_fields(report: Reports, data: ReportUpdate) -> Reports:
+def update_report_fields(report: Reports, data: ReportUpdateSchema) -> Reports:
     update_fields = data.dict(exclude_unset=True)
     for field, value in update_fields.items():
         if field == "IssueDate" and value:

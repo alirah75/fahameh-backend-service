@@ -1,10 +1,10 @@
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from schemas.TimeTable import TimeTableCreate
+from schemas.TimeTable import TimeTableCreateSchema
 from database.models.T_RFIDate import RFI_Date
 
 
-def insert_in_rfi_date(db: Session, data: TimeTableCreate, rfi_numbering):
+def insert_in_rfi_date(db: Session, data: TimeTableCreateSchema, rfi_numbering):
     rfi_dates = []
 
 

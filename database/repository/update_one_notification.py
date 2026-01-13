@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from database.models.T_RFIDate import RFI_Date
 from database.models.T_TimeTable import TimeTable
-from schemas.TimeTable import RFI_Date_Update, Notification_Update
+from schemas.TimeTable import RFIDateUpdateSchema, NotificationUpdateSchema
 
 
-def update_notif(db: Session, rfi_number: str, payload: RFI_Date_Update, current_user: str):
+def update_notif(db: Session, rfi_number: str, payload: RFIDateUpdateSchema, current_user: str):
     """اپدیت اطلاعات تاریخ های بازرسی."""
     record = db.query(RFI_Date).filter(RFI_Date.IDRD == payload.IDRD, RFI_Date.RFI_Numbering == rfi_number).first()
 
@@ -26,7 +26,7 @@ def update_notif(db: Session, rfi_number: str, payload: RFI_Date_Update, current
     return record
 
 
-def update_time_table_info(db: Session, rfi_number: str, payload: Notification_Update, current_user: str):
+def update_time_table_info(db: Session, rfi_number: str, payload: NotificationUpdateSchema, current_user: str):
     """آپدیت اطلاعات نوتیفیکیشن. قسمت بالایی اطلاعات نوتیفیکیش شماره ....."""
     record = db.query(TimeTable).filter(TimeTable.RFI_Numbering == rfi_number).first()
     # record = db.query(TimeTable).filter(TimeTable.NotificationNo == rfi_number).first()

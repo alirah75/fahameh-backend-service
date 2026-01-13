@@ -2,11 +2,11 @@ from sqlalchemy.orm import Session
 
 from database.models import Invoice
 from database.models.T_TimeTable import TimeTable
-from schemas.TimeTable import TimeTableCreate
+from schemas.TimeTable import TimeTableCreateSchema
 from core.config import settings
 
 
-def insert_in_timetable(db: Session, data: TimeTableCreate):
+def insert_in_timetable(db: Session, data: TimeTableCreateSchema):
     rfi_numbering = create_rfi_numbering(db, data.IDP, data.IDOM)
 
     timetable = TimeTable(

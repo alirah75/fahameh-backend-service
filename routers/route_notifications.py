@@ -8,7 +8,7 @@ from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
-from schemas.TimeTable import TimeTableCreate, RFI_Date_Update, Notification_Update
+from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema
 
 router = APIRouter()
 
@@ -42,7 +42,7 @@ def retrieve_one_notification(rfi_number, current_user: str = Depends(get_curren
 
 
 @router.post("/", summary="ساخت نوتیفیکشن جدید", status_code=status.HTTP_201_CREATED)
-def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_timetable_api(data: TimeTableCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     from database.models import TimeTable
     existing = db.query(TimeTable).filter(
         TimeTable.IDP == data.IDP,
@@ -71,7 +71,7 @@ def create_timetable_api(data: TimeTableCreate, current_user: str = Depends(get_
 @router.put('/{rfi_number}', summary='آپدیت اطلاعات روز های بازرسی', status_code=status.HTTP_200_OK)
 def update_rfi_date(
     rfi_number: str,
-    payload: RFI_Date_Update,
+    payload: RFIDateUpdateSchema,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -92,7 +92,7 @@ def update_rfi_date(
 @router.put('/notification/', summary='آپدیت اطلاعات نوتیفیکیشن', status_code=status.HTTP_200_OK)
 def update_time_table(
     rfi_number: str,
-    payload: Notification_Update,
+    payload: NotificationUpdateSchema,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

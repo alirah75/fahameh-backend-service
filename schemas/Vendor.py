@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class VendorCreate(BaseModel):
+class VendorCreateSchema(BaseModel):
     name: str
     over_domestic: bool

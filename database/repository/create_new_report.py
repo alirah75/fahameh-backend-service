@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from schemas.Reports import ReportCreate
+from schemas.Reports import ReportCreateSchema
 from database.models.T_Reports import Reports
 from core.config import settings
 
-def insert_new_report(db: Session, data: ReportCreate):
+def insert_new_report(db: Session, data: ReportCreateSchema):
     new_report = Reports(
             RFI_Numbering=data.rfi_numbering,
             Report_No=data.report_no,

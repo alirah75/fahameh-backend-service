@@ -8,7 +8,7 @@ from database.repository.project import get_all_projects
 from database.repository.get_IRNNO import get_project_last_irnn
 from database.repository.create_new_project import insert_new_project
 from routers.route_login import get_current_user
-from schemas.Project import ProjectCreate
+from schemas.Project import ProjectCreateSchema
 
 
 router = APIRouter()
@@ -69,7 +69,7 @@ def get_full_rfi_data(idp, in_out, current_user: str = Depends(get_current_user)
 
 
 @router.post("/projects", status_code=status.HTTP_201_CREATED)
-def create_new_project(data: ProjectCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_new_project(data: ProjectCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(Project).filter(Project.Title == data.Title).first()
     if existing:
         raise HTTPException(

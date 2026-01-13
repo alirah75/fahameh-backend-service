@@ -5,7 +5,7 @@ from pydantic import BaseModel, validator
 from datetime import date
 
 
-class ReportCreate(BaseModel):
+class ReportCreateSchema(BaseModel):
     rfi_numbering: str
     report_no: Optional[str]
     rev_no: Optional[str] = None
@@ -36,7 +36,7 @@ class ReportCreate(BaseModel):
         return v
 
 
-class ReportUpdate(BaseModel):
+class ReportUpdateSchema(BaseModel):
     rfi_numbering: Optional[str] = None
     report_no: Optional[str] = None
     rev_no: Optional[str] = None

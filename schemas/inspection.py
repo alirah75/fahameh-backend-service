@@ -4,7 +4,7 @@ from datetime import date
 
 
 # اطلاعات پروژه
-class ProjectInfo(BaseModel):
+class ProjectInfoSchema(BaseModel):
     projectName: str
     province: str
     city: str
@@ -12,7 +12,7 @@ class ProjectInfo(BaseModel):
 
 
 # اطلاعات بازرس
-class InspectorInfo(BaseModel):
+class InspectorInfoSchema(BaseModel):
     inspectorName: str
     inspectorLocation: str
     phoneNumber: str
@@ -22,27 +22,27 @@ class InspectorInfo(BaseModel):
 
 
 # نوتیفیکیشن‌ها
-class InspectionDate(BaseModel):
+class InspectionDateSchema(BaseModel):
     startDate: date
     endDate: date
 
 
-class Notification(BaseModel):
+class NotificationSchema(BaseModel):
     registrationNumber: str
     sendDate: date
     inspectionDaysCount: int
-    inspectionDate: InspectionDate
+    inspectionDate: InspectionDateSchema
 
 
 # گزارش‌ها
-class Report(BaseModel):
+class ReportSchema(BaseModel):
     reportNumber: str
     receiveDate: date
     status: str
 
 
 # صورتجلسه‌های بازرسی
-class InspectionStatement(BaseModel):
+class InspectionStatementSchema(BaseModel):
     inspectionDate: date
     approvalStatus: str
     inspectorName: str
@@ -52,9 +52,9 @@ class InspectionStatement(BaseModel):
 
 
 # مدل اصلی درخواست (Request Body)
-class InspectionCreate(BaseModel):
-    projectInfo: ProjectInfo
-    inspectorInfo: InspectorInfo
-    notifications: List[Notification]
-    reports: List[Report]
-    inspectionStatements: List[InspectionStatement]
+class InspectionCreateSchema(BaseModel):
+    projectInfo: ProjectInfoSchema
+    inspectorInfo: InspectorInfoSchema
+    notifications: List[NotificationSchema]
+    reports: List[ReportSchema]
+    inspectionStatements: List[InspectionStatementSchema]

@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
 from database.models.token_blacklist import TokenBlacklist
 from database.session import get_db
 from core.hashing import Hasher
-from schemas.token import Token
+from schemas.token import TokenSchema
 from database.repository.login import get_user
 from core.security import create_access_token
 from jose import JWTError, jwt
@@ -25,7 +25,7 @@ def authenticate_user(username: str, password: str,db: Session):
     return user
 
 
-@router.post("/token", response_model=Token)
+@router.post("/token", response_model=TokenSchema)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),db: Session= Depends(get_db)):
     user = authenticate_user(form_data.username, form_data.password,db)
     if not user:

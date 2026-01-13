@@ -1,10 +1,10 @@
 from database.models import Reports
 from sqlalchemy.orm import Session
 
-from schemas.Reports import ReportUpdate
+from schemas.Reports import ReportUpdateSchema
 
 
-def update_report(db: Session, rfi_number: str, data: ReportUpdate):
+def update_report(db: Session, rfi_number: str, data: ReportUpdateSchema):
     obj = db.query(Reports)\
         .filter(Reports.RFI_Numbering == rfi_number)\
         .first()
