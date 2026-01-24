@@ -132,6 +132,7 @@ def update_report(
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
+
     report = get_report_by_rfi(db, rfi_numbering)
     if isinstance(data, list):
         for item in data:
