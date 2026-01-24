@@ -1,5 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
+from core.config import settings
 from database.models.T_RFIDate import RFI_Date
 from database.models.T_Reports import Reports
 from database.models.T_TimeTable import TimeTable
@@ -29,3 +31,11 @@ def delete_notification_service(db: Session, rfi_number: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete notification data: {str(e)}"
         )
+
+def delete_one_date_service(db: Session, rfi_number: str, date_):
+
+    date = date_.date_
+    date_rows = db.query(RFI_Date).filter(RFI_Date.RFI_Numbering == rfi_number,
+                                              RFI_Date.RFI_Date == date).first()
+    db.delete(date_rows)
+    db.commit()

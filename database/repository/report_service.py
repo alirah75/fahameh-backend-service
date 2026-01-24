@@ -4,6 +4,14 @@ from schemas.Reports import ReportUpdateSchema
 from core.config import settings
 from fastapi import HTTPException, status
 
+FIELD_MAP = {
+    "rfi_numbering": "RFI_Numbering",
+    "report_no": "Report_No",
+    "rev_no": "RevNO",
+    "user": "User",
+}
+
+
 def get_report_by_rfi(db: Session, rfi_numbering: str) -> Reports:
     report = db.query(Reports).filter(Reports.RFI_Numbering == rfi_numbering).first()
     if not report:
@@ -16,13 +24,19 @@ def get_report_by_rfi(db: Session, rfi_numbering: str) -> Reports:
 def update_report_fields(report: Reports, data: ReportUpdateSchema) -> Reports:
     update_fields = data.dict(exclude_unset=True)
     for field, value in update_fields.items():
-        if field == "IssueDate" and value:
-            setattr(report, "DateShamsi", settings.gregorian_to_jalali_str(value))
-        setattr(report, field, value)
+        db_field = FIELD_MAP.get(field, field)
+
+        if hasattr(Reports, db_field):
+            setattr(report, db_field, value)
+
+            if db_field == "IssueDate" and value:
+                report.DateShamsi = settings.gregorian_to_jalali_str(value)
+
     return report
 
 def commit_report_update(db: Session, report: Reports) -> Reports:
     try:
+        db.add(report)
         db.commit()
         db.refresh(report)
     except Exception as e:

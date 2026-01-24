@@ -2,13 +2,14 @@ from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
 from database.repository.create_new_rfi_date import insert_in_rfi_date
-from database.repository.delete_one_notification import delete_notification_service
+from database.repository.delete_one_notification import delete_notification_service, delete_one_date_service
 from database.repository.update_one_notification import update_notif, update_time_table_info
 from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
 from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema
+from schemas.rfi_date import RFI_DateSchema
 
 router = APIRouter()
 
@@ -117,6 +118,18 @@ def delete_notification(
     db: Session = Depends(get_db)
 ):
     delete_notification_service(db, rfi_numbering)
+    return {
+        "message": "Notification and related data deleted successfully"
+    }
+
+@router.delete("/one_date/", summary="Delete one date", status_code=status.HTTP_204_NO_CONTENT)
+def delete_one_date(
+    rfi_numbering,
+    date_: RFI_DateSchema,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    delete_one_date_service(db, rfi_numbering, date_)
     return {
         "message": "Notification and related data deleted successfully"
     }
