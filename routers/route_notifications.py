@@ -9,7 +9,6 @@ from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
 from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema
-from schemas.rfi_date import RFI_DateSchema
 
 router = APIRouter()
 
@@ -125,7 +124,7 @@ def delete_notification(
 @router.delete("/one_date/", summary="Delete one date", status_code=status.HTTP_204_NO_CONTENT)
 def delete_one_date(
     rfi_numbering,
-    date_: RFI_DateSchema,
+    date_,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):

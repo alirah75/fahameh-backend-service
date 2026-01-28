@@ -1,3 +1,4 @@
+import jdatetime
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -33,9 +34,10 @@ def delete_notification_service(db: Session, rfi_number: str):
         )
 
 def delete_one_date_service(db: Session, rfi_number: str, date_):
-
-    date = date_.date_
+    v = date_.replace("/", "-")
+    year, month, day = map(int, v.split("-"))
+    g_date = jdatetime.date(year, month, day).togregorian()
     date_rows = db.query(RFI_Date).filter(RFI_Date.RFI_Numbering == rfi_number,
-                                              RFI_Date.RFI_Date == date).first()
+                                              RFI_Date.RFI_Date == g_date).first()
     db.delete(date_rows)
     db.commit()

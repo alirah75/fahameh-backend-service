@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from typing import Union, List
-from fastapi import Depends, APIRouter, HTTPException, status
+from enum import Enum
+from fastapi import Depends, APIRouter, HTTPException, status, Query
 from database.repository.create_new_report import insert_new_report
+from database.repository.get_report_no import find_report_no
 from database.repository.report_service import update_report_fields, commit_report_update, get_report_by_rfi, \
     delete_report_commit, get_report_by_report_number
 from database.session import get_db
@@ -13,6 +14,9 @@ from schemas.Reports import ReportCreateSchema, ReportUpdateSchema
 
 router = APIRouter()
 
+class RevType(str, Enum):
+    rev = "rev"
+    multipart = "multipart"
 
 # @router.get("/rfi/", status_code=status.HTTP_200_OK)
 # def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -52,11 +56,11 @@ router = APIRouter()
 
 @router.get("/rfi/", status_code=status.HTTP_200_OK)
 def fetch_rfi_report(project_name, project_type=str(1), current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    if project_type == '1':
+    if project_type == '0':
+        project_type = 'خارجی'
+    elif project_type == '1':
         project_type = 'داخلی کالا'
     elif project_type == '2':
-        project_type = 'خارجی'
-    elif project_type == '3':
         project_type = 'داخلی کشتی'
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='project type is not correct')
@@ -112,6 +116,19 @@ def retrieve_one_report(rfi_number, report_number, current_user: str = Depends(g
     return report_dict
 
 
+@router.get("/suggest_report_no/", summary='پیشنهاد شماره گزارش', status_code=status.HTTP_200_OK)
+def suggest_report_no(
+    rfi_numbering: str,
+    report_no: str,
+    rev_no: RevType,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+
+    result = find_report_no(rfi_numbering, report_no, rev_no, db)
+
+    return result.get('suggested_report_no')
+
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_new_report(data: ReportCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
 
@@ -128,7 +145,7 @@ def create_new_report(data: ReportCreateSchema, current_user: str = Depends(get_
 @router.put("/{rfi_numbering}", status_code=status.HTTP_200_OK)
 def update_report(
     rfi_numbering: str,
-    data: Union[ReportUpdateSchema, List[ReportUpdateSchema]],
+    data: ReportUpdateSchema,
     current_user: str = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
