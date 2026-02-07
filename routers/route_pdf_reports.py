@@ -15,28 +15,31 @@ router = APIRouter()
 @router.get(
     "/daily-report/",
     summary="گزارش روزانه (لینک یا دانلود مستقیم)",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    responses={
+        200: {
+            "content": {
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+            },
+            "description": "Excel file"
+        }
+    }
 )
 def daily_report_view(
     year: int = Query(..., ge=1400, le=1500),
     month: str = Query(...),
     over_domestic: str = Query(...),
-    download: bool = Query(False),  # 👈 کلید ماجرا
+    download: bool = Query(True),
     db: Session = Depends(get_db),
     current_user: str = Depends(get_current_user)
 ):
     result = daily_report(db=db, year=year, month=month, over_domestic=over_domestic)
 
     if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="گزارشی یافت نشد"
-        )
+        raise HTTPException(status_code=404, detail="گزارشی یافت نشد")
 
-    # اگر دانلود مستقیم خواست
     if download:
         excel_file = generate_daily_report_excel(result)
-
         filename = f"daily_report_{year}_{month}.xlsx"
         encoded_filename = quote(filename)
 
@@ -48,17 +51,15 @@ def daily_report_view(
             }
         )
 
-    # در غیر اینصورت فقط لینک بده
-    download_link = (
-        f"/daily-report/"
-        f"?year={year}&month={month}&over_domestic={over_domestic}&download=true"
-    )
-
+    from urllib.parse import urlencode
     return {
-        "download_url": download_link,
-        "filename": f"daily_report_{year}_{month}.xlsx"
+        "download_url": "/pdf_reports/daily-report/?" + urlencode({
+            "year": year,
+            "month": month,
+            "over_domestic": over_domestic,
+            "download": True
+        })
     }
-
 
 def generate_daily_report_excel(data: list) -> BytesIO:
     df = pd.DataFrame(data)
