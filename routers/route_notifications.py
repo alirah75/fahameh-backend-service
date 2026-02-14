@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
+from database.repository.create_new_inspection import insert_new_rfi_date
 from database.repository.create_new_rfi_date import insert_in_rfi_date
 from database.repository.delete_one_notification import delete_notification_service, delete_one_date_service
 from database.repository.update_one_notification import update_notif, update_time_table_info
@@ -8,7 +9,8 @@ from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
-from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema
+from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema, \
+    AddInspectionDateSchema
 
 router = APIRouter()
 
@@ -38,6 +40,20 @@ def retrieve_one_notification(rfi_number, current_user: str = Depends(get_curren
 #             detail=f'Notification with RFI_Number "{report_number}" not found.'
 #         )
 #     return one_note
+
+@router.post(
+    "/add-inspection-dates",
+    summary="ایجاد تاریخ بازرسی جدید",
+    status_code=status.HTTP_201_CREATED
+)
+def create_inspection_date(
+    data: AddInspectionDateSchema,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    new_row = insert_new_rfi_date(db, data)
+
+    return new_row
 
 
 

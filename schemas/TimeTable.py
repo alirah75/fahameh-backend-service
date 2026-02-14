@@ -74,3 +74,14 @@ class NotificationUpdateSchema(BaseModel):
     @validator("InspectionDate", "RFI_Recived_Date", pre=True)
     def validate_dates(cls, v):
         return parse_jalali(v)
+
+class AddInspectionDateSchema(BaseModel):
+    RFI_Numbering: str
+    RFI_Date: date
+    ApproveManday: str
+    Inspector_Name: str
+    InspectorPrice: str
+
+    @validator("RFI_Date", pre=True)
+    def validate_dates(cls, v):
+        return parse_jalali(v)
