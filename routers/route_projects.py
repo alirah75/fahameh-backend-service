@@ -4,12 +4,12 @@ from fastapi import Depends, APIRouter, HTTPException, status
 from database.repository.get_next_rfi_number import get_full_rfi_info
 from database.session import get_db
 from database.models import Project
-from database.repository.project import get_all_projects
+from database.repository.crud_project import get_all_projects, update_existing_project, delete_existing_project, \
+    get_project_by_id
 from database.repository.get_IRNNO import get_project_last_irnn
-from database.repository.create_new_project import insert_new_project
+from database.repository.crud_project import create_new_project
 from routers.route_login import get_current_user
-from schemas.Schema_Project import ProjectCreateSchema
-
+from schemas.Schema_Project import ProjectCreate, ProjectUpdate
 
 router = APIRouter()
 
@@ -69,7 +69,7 @@ def get_full_rfi_data(idp, in_out, current_user: str = Depends(get_current_user)
 
 
 @router.post("/projects", status_code=status.HTTP_201_CREATED)
-def create_new_project(data: ProjectCreateSchema, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+def create_project(data: ProjectCreate, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
     existing = db.query(Project).filter(Project.Title == data.Title).first()
     if existing:
         raise HTTPException(
@@ -77,7 +77,7 @@ def create_new_project(data: ProjectCreateSchema, current_user: str = Depends(ge
             detail=f'Title "{data.Title}" already exists.'
         )
     try:
-        new_item = insert_new_project(db, data)
+        new_item = create_new_project(db, data)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -85,3 +85,29 @@ def create_new_project(data: ProjectCreateSchema, current_user: str = Depends(ge
         )
 
     return {"message": "Created new project successfully", "data": new_item.IDP}
+
+
+
+@router.put("/{project_id}")
+def update_project(
+    project_id: int,
+    project: ProjectUpdate,
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    db_project = get_project_by_id(db, project_id)
+
+    if not db_project:
+        raise HTTPException(status_code=404, detail="پروژه یافت نشد")
+
+    return update_existing_project(db, db_project, project)
+
+
+@router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_project(project_id: int, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_project = get_project_by_id(db, project_id)
+
+    if not db_project:
+        raise HTTPException(status_code=404, detail="پروژه یافت نشد")
+
+    delete_existing_project(db, db_project)
