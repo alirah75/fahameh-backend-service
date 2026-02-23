@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
+from database.repository import location_crud
 from database.session import get_db
 
 from database.repository.country import get_countries
@@ -8,7 +9,7 @@ from database.repository.provinces import get_provinces
 from database.repository.cities import get_cities_by_province
 
 from routers.route_login import get_current_user
-
+from schemas.Schema_Location import LocationRead, LocationCreate, LocationUpdate
 
 router = APIRouter()
 
@@ -69,3 +70,43 @@ def list_countries(current_user: str = Depends(get_current_user), db: Session = 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error fetching countries: {str(e)}")
+
+
+# @router.post("/", response_model=LocationRead, status_code=status.HTTP_201_CREATED)
+# def create_location(location: LocationCreate, db: Session = Depends(get_db)):
+#     return location_crud.create_location(db, location)
+#
+#
+# @router.get("/", response_model=list[LocationRead])
+# def get_locations(db: Session = Depends(get_db)):
+#     return location_crud.get_all_locations(db)
+#
+#
+# @router.get("/{location_id}", response_model=LocationRead)
+# def get_location(location_id: int, db: Session = Depends(get_db)):
+#     db_location = location_crud.get_location(db, location_id)
+#
+#     if not db_location:
+#         raise HTTPException(status_code=404, detail="Location یافت نشد")
+#
+#     return db_location
+#
+#
+# @router.put("/{location_id}", response_model=LocationRead)
+# def update_location(location_id: int, location: LocationUpdate, db: Session = Depends(get_db)):
+#     db_location = location_crud.get_location(db, location_id)
+#
+#     if not db_location:
+#         raise HTTPException(status_code=404, detail="Location یافت نشد")
+#
+#     return location_crud.update_location(db, db_location, location)
+#
+#
+# @router.delete("/{location_id}", status_code=status.HTTP_204_NO_CONTENT)
+# def delete_location(location_id: int, db: Session = Depends(get_db)):
+#     db_location = location_crud.get_location(db, location_id)
+#
+#     if not db_location:
+#         raise HTTPException(status_code=404, detail="Location یافت نشد")
+#
+#     location_crud.delete_location(db, db_location)
