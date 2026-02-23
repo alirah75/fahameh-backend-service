@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from database.models.T_Reports import Reports
-from schemas.Reports import ReportUpdateSchema
+from schemas.Schema_Reports import ReportUpdateSchema
 from core.config import settings
 from fastapi import HTTPException, status
 

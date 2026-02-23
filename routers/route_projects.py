@@ -8,7 +8,7 @@ from database.repository.project import get_all_projects
 from database.repository.get_IRNNO import get_project_last_irnn
 from database.repository.create_new_project import insert_new_project
 from routers.route_login import get_current_user
-from schemas.Project import ProjectCreateSchema
+from schemas.Schema_Project import ProjectCreateSchema
 
 
 router = APIRouter()

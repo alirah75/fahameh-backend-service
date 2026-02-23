@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from database.models.T_RFIDate import RFI_Date
 from database.models.T_TimeTable import TimeTable
-from schemas.TimeTable import RFIDateUpdateSchema, NotificationUpdateSchema
+from schemas.Schema_TimeTable import RFIDateUpdateSchema, NotificationUpdateSchema
 
 
 def update_notif(db: Session, rfi_number: str, payload: RFIDateUpdateSchema, current_user: str):

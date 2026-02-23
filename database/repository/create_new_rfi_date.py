@@ -1,6 +1,6 @@
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-from schemas.TimeTable import TimeTableCreateSchema
+from schemas.Schema_TimeTable import TimeTableCreateSchema
 from database.models.T_RFIDate import RFI_Date
 
 

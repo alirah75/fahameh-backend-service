@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from schemas.Reports import ReportCreateSchema
+from schemas.Schema_Reports import ReportCreateSchema
 from database.models.T_Reports import Reports
 from core.config import settings
 

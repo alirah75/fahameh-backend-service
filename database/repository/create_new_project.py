@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from database.models import Invoice
-from schemas.Project import ProjectCreateSchema
+from schemas.Schema_Project import ProjectCreateSchema
 from database.models.T_Project import Project
 
 

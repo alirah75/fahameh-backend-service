@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from database.models.T_RFIDate import RFI_Date
-from schemas.TimeTable import AddInspectionDateSchema
+from schemas.Schema_TimeTable import AddInspectionDateSchema
 
 
 def insert_new_rfi_date(db: Session, rfi_date: AddInspectionDateSchema):

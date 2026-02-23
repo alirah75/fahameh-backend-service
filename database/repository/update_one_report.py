@@ -1,7 +1,7 @@
 from database.models import Reports
 from sqlalchemy.orm import Session
 
-from schemas.Reports import ReportUpdateSchema
+from schemas.Schema_Reports import ReportUpdateSchema
 
 
 def update_report(db: Session, rfi_number: str, data: ReportUpdateSchema):

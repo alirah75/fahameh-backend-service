@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from database.models import Invoice
 from database.models.T_TimeTable import TimeTable
-from schemas.TimeTable import TimeTableCreateSchema
+from schemas.Schema_TimeTable import TimeTableCreateSchema
 from core.config import settings
 
 

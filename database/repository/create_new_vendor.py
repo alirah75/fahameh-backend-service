@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from schemas.Vendor import VendorCreateSchema
+from schemas.Schema_Vendor import VendorCreateSchema
 from database.models.vendor import Vendor
 
 def insert_new_vendor(db: Session, data: VendorCreateSchema):

@@ -9,7 +9,7 @@ from database.session import get_db
 from database.repository.get_one_notif import find_notif
 from database.repository.create_time_table import insert_in_timetable
 from routers.route_login import get_current_user
-from schemas.TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema, \
+from schemas.Schema_TimeTable import TimeTableCreateSchema, RFIDateUpdateSchema, NotificationUpdateSchema, \
     AddInspectionDateSchema
 
 router = APIRouter()

@@ -10,7 +10,7 @@ from database.session import get_db
 from database.repository.get_one_report import find_report
 from database.repository.get_rfi_report import get_report_rfi
 from routers.route_login import get_current_user
-from schemas.Reports import ReportCreateSchema, ReportUpdateSchema
+from schemas.Schema_Reports import ReportCreateSchema, ReportUpdateSchema
 
 router = APIRouter()
 

@@ -8,7 +8,7 @@ from database.repository.get_vendors import fetch_vendors_name
 from database.repository.create_new_vendor import insert_new_vendor
 from routers.route_login import get_current_user
 
-from schemas.Vendor import VendorCreateSchema
+from schemas.Schema_Vendor import VendorCreateSchema
 
 
 router = APIRouter()

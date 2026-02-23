@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
 from database.models.token_blacklist import TokenBlacklist
 from database.session import get_db
 from core.hashing import Hasher
-from schemas.token import TokenSchema
+from schemas.Schema_Token import TokenSchema
 from database.repository.login import get_user
 from core.security import create_access_token
 from jose import JWTError, jwt

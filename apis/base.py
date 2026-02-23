@@ -26,6 +26,6 @@ api_router.include_router(route_inspectors.router, prefix="/inspectors", tags=["
 api_router.include_router(route_lookups.router, prefix="/lookups", tags=["lookups"])
 api_router.include_router(route_dashboard.router, prefix="", tags=["dashboard"])
 api_router.include_router(route_login.router, prefix="", tags=["login"])
-api_router.include_router(route_user.router,prefix="",tags=["users"])
+api_router.include_router(route_user.router,prefix="/users",tags=["Users"])
 api_router.include_router(route_manager.router,prefix="/manager",tags=["manager"])
 api_router.include_router(route_basic_information.router,prefix="/base-info",tags=["basic-information"])

@@ -1,4 +1,4 @@
-# database/models/inspection.py
+# database/models/Schema_Inspection.py
 from sqlalchemy import Column, Integer, String, Float, DateTime, func
 from sqlalchemy.orm import relationship
 from database.models.base import Base
