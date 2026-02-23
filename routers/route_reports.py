@@ -1,13 +1,11 @@
 from sqlalchemy.orm import Session
 from enum import Enum
-from fastapi import Depends, APIRouter, HTTPException, status, Query
-from database.repository.create_new_report import insert_new_report
-from database.repository.get_report_no import find_report_no
+from fastapi import Depends, APIRouter, HTTPException, status
+from database.repository.crud_report import find_report_no, insert_new_report, find_report
 from database.repository.report_service import update_report_fields, commit_report_update, get_report_by_rfi, \
     delete_report_commit, get_report_by_report_number
 from database.session import get_db
 
-from database.repository.get_one_report import find_report
 from database.repository.get_rfi_report import get_report_rfi
 from routers.route_login import get_current_user
 from schemas.Schema_Reports import ReportCreateSchema, ReportUpdateSchema
@@ -18,41 +16,11 @@ class RevType(str, Enum):
     rev = "rev"
     multipart = "multipart"
 
-# @router.get("/rfi/", status_code=status.HTTP_200_OK)
-# def fetch_rfi_report(project_name, current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-#     data = get_report_rfi(project_name, db)
-#     if not data:
-#         return []
-#
-#     result = {}
-#     for i, (
-#             rfi_number,
-#             rfi_status,
-#             inspection_date,
-#             report_no,
-#             irnno,
-#             App_manday_1stPrice,
-#             NotificationNo,
-#             RFI_Numbering,
-#             title,
-#             over_domestic,
-#             vendor_name
-#     ) in enumerate(data, start=1):
-#         result[str(i)] = {
-#             "RFI_Number": rfi_number,
-#             "RFI_Status": rfi_status,
-#             "InspectionDate": inspection_date,
-#             "Report_No": report_no,
-#             "IRNNO": irnno,
-#             "Duration": App_manday_1stPrice,
-#             "NotificationNo": NotificationNo,    # ToDo change RFI_Numbering with NotificationNo in ui
-#             "RFI_Numbering": RFI_Numbering,    # ToDo change RFI_Numbering with NotificationNo in ui
-#             "ProjectTitle": title,
-#             "Over_Domestic": over_domestic,
-#             "VendorName": vendor_name
-#         }
-#
-#     return result
+
+@router.get("/report-statuses", summary="دریافت لیست وضعیت‌های ممکن برای گزارش‌ها", status_code=status.HTTP_200_OK)
+def list_report_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
+    return {1: "Acc", 2: "Objection", 3: "not recived", 4: "Rej"}
+
 
 @router.get("/rfi/", status_code=status.HTTP_200_OK)
 def fetch_rfi_report(project_name, project_type=str(1), current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):

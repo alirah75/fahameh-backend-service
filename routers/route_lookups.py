@@ -1,29 +1,10 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
-
 from database.session import get_db
-
 from database.repository.in_out import get_inout_list
-from database.repository.report_status import get_all_report_statuses
 from routers.route_login import get_current_user
 
-
 router = APIRouter()
-
-
-@router.get("/report-statuses", summary="دریافت لیست وضعیت‌های ممکن برای گزارش‌ها", status_code=status.HTTP_200_OK)
-def list_report_statuses(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
-    # statuses = get_all_report_statuses(db)
-
-    # if not statuses:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_404_NOT_FOUND,
-    #         detail="هیچ وضعیت گزارشی یافت نشد"
-    #     )
-    #
-    # return {idx: status[0] for idx, status in enumerate(statuses, start=1)}
-    return {1: "Acc", 2: "Objection", 3: "not recived", 4: "Rej"}
-
 
 @router.get("/", summary="دریافت لیست مقدارهای غیرتکراری Cmbinout از جدول T_Invoice", status_code=status.HTTP_200_OK)
 def list_inout(current_user: str = Depends(get_current_user), db: Session = Depends(get_db)):
