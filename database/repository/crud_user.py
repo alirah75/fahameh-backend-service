@@ -2,6 +2,11 @@ from sqlalchemy.orm import Session
 from database.models.User import User
 from core.hashing import Hasher
 
+
+def get_user(username:str,db: Session):
+    user = db.query(User).filter(User.user_name == username).first()
+    return user
+
 def get_user_by_username(db: Session, user_name: str):
     return db.query(User).filter(User.user_name == user_name).first()
 

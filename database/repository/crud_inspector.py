@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database.models.T_Inspector import Inspector
 from schemas.Schema_Inspectors import InspectorCreateSchema, InspectorUpdateSchema
@@ -10,7 +11,12 @@ def get_inspector_by_id(db: Session, id_ins: int):
     return db.query(Inspector).filter(Inspector.ID_Ins == id_ins).first()
 
 def create_inspector(db: Session, data: InspectorCreateSchema):
-    new_inspector = Inspector(**data.dict())
+    last_id = db.query(func.max(Inspector.ID_Ins)).scalar() or 0
+
+    new_inspector = Inspector(
+        ID_Ins=last_id + 1,
+        **data.dict()
+    )
     db.add(new_inspector)
     db.commit()
     db.refresh(new_inspector)
