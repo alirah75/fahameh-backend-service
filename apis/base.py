@@ -12,20 +12,18 @@ from routers import route_reports
 from routers import route_notifications
 from routers import route_pdf_reports
 from routers import route_manager
-from routers import route_basic_information
 
 
 api_router = APIRouter()
-api_router.include_router(route_notifications.router, prefix="/notifications", tags=["notifications"])
-api_router.include_router(route_projects.router, prefix="/projects", tags=["projects"])
-api_router.include_router(route_reports.router, prefix="/reports", tags=["reports"])
-api_router.include_router(route_pdf_reports.router, prefix="/pdf_reports", tags=["pdf_reports"])
-api_router.include_router(route_locations.router, prefix="/locations", tags=["locations"])
-api_router.include_router(route_vendors.router, prefix="/vendors", tags=["vendors"])
-api_router.include_router(route_inspectors.router, prefix="/inspectors", tags=["inspectors"])
-api_router.include_router(route_lookups.router, prefix="/lookups", tags=["lookups"])
-api_router.include_router(route_dashboard.router, prefix="", tags=["dashboard"])
-api_router.include_router(route_login.router, prefix="", tags=["login"])
+api_router.include_router(route_notifications.router, prefix="/notifications", tags=["Notifications"])
+api_router.include_router(route_projects.router, prefix="/projects", tags=["Projects"])
+api_router.include_router(route_reports.router, prefix="/reports", tags=["Reports"])
+api_router.include_router(route_pdf_reports.router, prefix="/pdf_reports", tags=["Pdf_Reports"])
+api_router.include_router(route_locations.router, prefix="/locations", tags=["Locations"])
+api_router.include_router(route_vendors.router, prefix="/vendors", tags=["Vendors"])
+api_router.include_router(route_inspectors.router, prefix="/inspectors", tags=["Inspectors"])
+api_router.include_router(route_lookups.router, prefix="/lookups", tags=["Lookups"])
+api_router.include_router(route_dashboard.router, prefix="", tags=["Dashboard"])
+api_router.include_router(route_login.router, prefix="", tags=["Login"])
 api_router.include_router(route_user.router,prefix="/users",tags=["Users"])
-api_router.include_router(route_manager.router,prefix="/manager",tags=["manager"])
-api_router.include_router(route_basic_information.router,prefix="/base-info",tags=["basic-information"])
+api_router.include_router(route_manager.router,prefix="/manager",tags=["Manager"])
