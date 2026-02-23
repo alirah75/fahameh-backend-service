@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from database.models.token_blacklist import TokenBlacklist
-from database.repository import user_crud
+from database.repository import crud_user
 from database.session import get_db
 from routers.route_login import get_current_user
 from schemas.Schema_User import UserBaseSchema, UserCreateSchema, UserUpdate
