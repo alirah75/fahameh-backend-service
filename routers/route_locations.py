@@ -1,14 +1,16 @@
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, HTTPException, status
 
-from database.repository import location_crud
+from database.models.country import Country
 from database.session import get_db
 
-from database.repository.country import get_countries
+from database.repository.crud_location import get_countries, get_country_by_id, create_country, update_country, \
+    delete_country
 from database.repository.provinces import get_provinces
 from database.repository.cities import get_cities_by_province
 
 from routers.route_login import get_current_user
+from schemas.Schema_Country import CountryRead, CountryCreate, CountryUpdate
 from schemas.Schema_Location import LocationRead, LocationCreate, LocationUpdate
 
 router = APIRouter()
@@ -71,6 +73,53 @@ def list_countries(current_user: str = Depends(get_current_user), db: Session = 
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error fetching countries: {str(e)}")
 
+
+@router.get('/{country_id}', response_model=CountryRead)
+def get_country(country_id: int,
+                current_user: str = Depends(get_current_user),
+                db: Session = Depends(get_db)):
+
+    country = get_country_by_id(db, country_id)
+    if not country:
+        raise HTTPException(status_code=404, detail="Country not found")
+
+    return country
+
+@router.post('/countries/', response_model=CountryRead, status_code=status.HTTP_201_CREATED)
+def add_country(data: CountryCreate,
+                current_user: str = Depends(get_current_user),
+                db: Session = Depends(get_db)):
+
+    existing = db.query(Country).filter(Country.title == data.title).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Country already exists")
+
+    return create_country(db, data)
+
+@router.put('/countries/{country_id}', response_model=CountryRead)
+def edit_country(country_id: int,
+                 data: CountryUpdate,
+                 current_user: str = Depends(get_current_user),
+                 db: Session = Depends(get_db)):
+
+    country = get_country_by_id(db, country_id)
+    if not country:
+        raise HTTPException(status_code=404, detail="Country not found")
+
+    return update_country(db, country, data)
+
+
+# حذف کشور
+@router.delete('/countries/{country_id}', status_code=status.HTTP_204_NO_CONTENT)
+def remove_country(country_id: int,
+                   current_user: str = Depends(get_current_user),
+                   db: Session = Depends(get_db)):
+
+    country = get_country_by_id(db, country_id)
+    if not country:
+        raise HTTPException(status_code=404, detail="Country not found")
+
+    delete_country(db, country)
 
 # @router.post("/", response_model=LocationRead, status_code=status.HTTP_201_CREATED)
 # def create_location(location: LocationCreate, db: Session = Depends(get_db)):
